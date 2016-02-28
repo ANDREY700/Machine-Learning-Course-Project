@@ -30,7 +30,7 @@ As we result we will received 10 different predictions results. Assume that all 
 
 Choose 10 right methods from the existing 180, clear learning Assembly from the zero column and start the learning process. As the result we are receiving the next picture.
 
-![](form1.png)
+![](Form1.png)
 
 All results are given in percent.
 
@@ -38,7 +38,7 @@ All results are given in percent.
 
 As expected, the range of models results is quite strong. Now apply the training results received by the method "knn" (as an option).
 
-![](form2.png)
+![](Form2.png)
 
 As a result of applying re-training results improved significantly. I honestly didn't expect that a training example can reach a very good result with a probability of 99%++. Thus it was possible to follow by the same path as the Groupware@LES group, and get a decent result.
 
