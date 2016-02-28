@@ -15,10 +15,10 @@ The training data for this project are available here: https://d396qusza40orc.cl
 The test data are available here: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
 
 According to the description of the Course Project complete R code should not be provided with data describing the results of the calculations.
-### Header 3
+
 So letТs start step by step:
 
-Formulation of idea
+## Formulation of idea
 
 So, in order to achieve the same result, as colleagues from  Groupware@LES group, clean received training Assembly from NA and null columns. All designation of a classes we will transform to numeric values.
 
@@ -26,12 +26,12 @@ Take 10 appropriate methods for training our model on the training Assembly.
 
 As we result we will received 10 different predictions results. Assume that all 10 results will be not Уthe bestФ  and we will need to proceed one more training operation  on the 10 result set. It will help us to reduce the variation in results and to improve the accuracy of the forecast. 
 
-So let's check the idea.
+## So let's check the idea.
 
 Choose 10 right methods from the existing 180, clear learning Assembly from the zero column and start the learning process. As the result we are receiving the next picture.
 
 
-```{r echo=FALSE,message=FALSE}
+```{r}
   library(pander)
    R <- readRDS(file="Result.Step1.rds")
    pander(as.matrix(R[, c("A", "B", "C", "D", "E")]))
@@ -44,8 +44,7 @@ All results are given in percent.
 As expected, the range of models results is quite strong. Now apply the training results received by the method "knn" (as an option).
 
 
-```{r echo=FALSE,message=FALSE}
-  library(pander)
+```{r}
    R <- readRDS(file="Result2.Step1.rds")
    pander(as.matrix(R[, c("A", "B", "C", "D", "E")]))
 ```
