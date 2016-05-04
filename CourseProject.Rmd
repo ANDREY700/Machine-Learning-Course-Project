@@ -1,144 +1,344 @@
 ---
-title: "Course Project"
+title: "Machine Learning Course Project"
 author: "Andrey ABRAMOV"
-date: "28 february 2016"
-output: pdf_document
+date: "April 27 2016"
+output: html_document
 ---
 
-#Introduction
+## 1. Intro
+
+This Course Project is mainly about the project for Machine Learning provided by Johns Hopkins University  (https://www.coursera.org/learn/practical-machine-learning/home/welcome).
+
 The goal of our Course Project is to predict the same manner like Groupware@LES in which they did the Human Activity Recognition process. Human Activity Recognition - has emerged as a key research area in the last years and is gaining increasing attention by the pervasive computing research community.
+
+
+## 2 Background
 
 Groupware@LES proposed a dataset with 5 classes (sitting-down, standing-up, standing, walking, and sitting) collected on some hours of activities of 6 healthy subjects. This human activity recognition research has traditionally focused on discriminating between different activities, i.e. to predict "which" activity was performed at a specific point in time. The approach we propose for the Weight Lifting Exercises dataset is to investigate "how (well)" an activity was performed by the wearer.
 
-In this work we will try to make the same steps and received the same result as  Groupware@LES. 
+In this work we will try to make the same steps and received the same result as Groupware@LES. 
 
-#Data Source
-More information of Groupware@LES result  is available from the website here: http://groupware.les.inf.puc-rio.br/har. 
+More information of Groupware@LES result is available from the website here: http://groupware.les.inf.puc-rio.br/har. 
 The training data for this project are available here: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
 The test data are available here: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
 
-#Limitation
 According to the description of the Course Project complete R code should not be provided with data describing the results of the calculations.
 
-So letТs start step by step:
+So let's start step by step:
 
-## Formulation of idea
+## 3 Formulation of idea
 
 So, in order to achieve the same result, as colleagues from  Groupware@LES group, clean received training Assembly from NA and null columns. All designation of a classes we will transform to numeric values.
 
-Take 10 appropriate methods for training our model on the training Assembly.
+We will take 15 appropriate methods for training our model on the training Assembly as the STEP 1. Calculate a result.
+Assume that all results will be not the best and we will need to proceed one more training operation.
+I will apply the same set of methods on the result of STEP 1 like the STEP 2. 
+It will help us to reduce the variation in results and to improve the accuracy of the training. 
 
-As we result we will received 10 different predictions results. Assume that all 10 results will be not Уthe bestФ  and we will need to proceed one more training operation  on the 10 result set. It will help us to reduce the variation in results and to improve the accuracy of the forecast. 
 
-## So let's check the idea.
+## 4 Setting UP the calculation
 
-###Step 1
-Choose 10 right methods from the existing 180, clean learning Assembly from the zero column and start the learning process. 
-
-Load all neede libraryes
-```
+Setting up libraries and working directory:
+```{r}
 library(caret)
+library(doParallel) # for parallel calculation
+library(dplyr)
 library(ggplot2)
+#library(cowplot)
+library(pander)
+library(sqldf)
+
+# please set up working directory !!
 ```
 
-Convert and clean data set for trainig
-```
-# clean the data set
-adelmo <- adelmo[,-c(1:7)]
 
-# convert to text format
-for (i in 1:ncol(adelmo)) {adelmo[,i] <- as.character(adelmo[,i])}
-# find  all DIV/0! and replace by 0
-for (i in 1:ncol(adelmo)) {
-  adelmo[which(adelmo[,i]=="#DIV/0!"),i] <- 0
-  adelmo[which(adelmo[,i]==NA),i] <- 0
+## 5 Load mentioned data set
+
+Using direct link load two data sets:
+```{r}
+# training set
+A.url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+download.file(A.url, "pml-training.csv")
+A <- read.table(file="pml-training.csv", header = T, sep = ",")
+# testing set
+A.test.url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+download.file(A.test.url, "pml-testing.csv")
+A.test <- read.table(file="pml-testing.csv", header = T, sep = ",")
+```
+
+## 6 Cleaning Data Set
+
+Collect al person names from the data set:
+```{r}
+A$user_name <- as.character(A$user_name)
+personal.name = sqldf("SELECT user_name FROM A GROUP BY 1")
+personal.name
+```
+We have just 6 personal data in the loaded data set.
+
+Now clean the data sets of NA, Blunks and "#DIV/0!" items.
+```{r}
+Delete.Missed.Data <- function(x) #clean function
+{
+  index1 <- any(is.na(x))
+  index2 <- any(which(x==""))
+  any(index1, index2)
 }
-# all columns to number format
-for (i in 1:(ncol(adelmo)-1)) {adelmo[,i] <- as.numeric(adelmo[,i])}
-adelmo[,ncol(adelmo)] <- as.factor(adelmo[,ncol(adelmo)])
 
-for (i in 6:ncol(adelmo)-1) {
-  m <- is.na(adelmo[,i])
-  adelmo[m,i] <- 0
+A <- A[,!apply(A, 2, Delete.Missed.Data)]
+A.test <- A.test[,!apply(A.test, 2, Delete.Missed.Data)]
+
+A <- A[,-c(1,3:7)] # delete some extra columns
+A.test <- A.test[,-c(1,3:7)] # and from the test data set too
+```
+
+Replacing class chars by numeric:
+```{r}
+Class.As.Numeric <- function(x) {
+  x$Group <- 0
+  x$Group[which(x$classe=="A")] <- 1
+  x$Group[which(x$classe=="B")] <- 2
+  x$Group[which(x$classe=="C")] <- 3
+  x$Group[which(x$classe=="D")] <- 4
+  x$Group[which(x$classe=="E")] <- 5
+  return(x)
 }
+A <- Class.As.Numeric(A)
 ```
 
-Find and select 10
+## 7 Let's check the idea. Calculation of STEP 1
+
+Choose like for example 15 methods from the existing 180 and start the learning process. 
+```{r}
+# setting up methods names
+method.names <- c("enet", "foba", "gam", "gamLoess", "gbm", "glm", 
+                  "glmboost", "glmnet", "icr", "knn", "lars", "lars2", "lm", "rf", "spls") 
+methods.length <- length(method.names) # number of methods
+# prepearing a place for result
+# for training part
+for (k in 1:methods.length) { # prepare the columns for the result
+  A$x <- 0
+  names(A)[names(A) == 'x'] <- paste0("X.", k)
+} 
+# prepare the place for STEP 2 result
+A$x <- 0
+names(A)[names(A) == 'x'] <- "STEP.2"
+# for testing part
+A.test$classe <- ""
+for (k in 1:methods.length) {
+  A.test$x <- 0
+  names(A.test)[names(A.test) == 'x'] <- paste0("X.", k)
+}  
+A.test$x <- 0
+names(A.test)[names(A.test) == 'x'] <- "STEP.2"
+
+# create partitioning for training set
+inTrain <- createDataPartition(y=A$classe, p=0.9, list=F)
+B <- A[-inTrain, ] # part for checking the result of modeling
+A <- A[inTrain, ] # part for training
 ```
-# find all possible methods for training
-possible.methods <-names(getModelInfo())
-method.numbers <- c(13,23,30,38,49,55,56,57,63,68)
 
-```
-
-I was surprised that on three PC sets of the methods are different.
-
-###Step 2
-
-The dataset cleaned and ready for training
-```
-for (i in 1:6) {
+Starting learning process for each personal name as STEP 1:
+```{r}
+Flag <- 0
+for (j in 1:methods.length) {
+    print(paste0(j, "+", " : ", method.names[j]))
+    A.selected <- A[ , c(2:53, 55)]
+    
     cl <- makeCluster(detectCores())
     registerDoParallel(cl) # Register workers (cores)
-    model.x <- train(classe~., data=adelmo, method=possible.methods[method.numbers[i]])
+    model.x <- train(Group~., data=A.selected, method=method.names[j]) # training line
     stopCluster(cl) # Closing parallel processing session
-    saveRDS(model.x, paste0("Model.", as.character(method.numbers[i]), "-", personal.name[j],".Rev.1.rds"))
+  
+    A[ , 55+j] <-  predict(model.x, A[ , 2:53]) # checking the result on training part       
+    B[ , 55+j] <-  predict(model.x, B[ , 2:53]) # the same for checking part
+    A.test[ , 55+j] <-  predict(model.x, A.test[ , 2:53]) # apply for result testing set
 }
 ```
 
-###Step 3
+## 8 Cross Validation & Quality Anlysis of STEP 1
 
-Lets find the prediction for the training dataset and compare it to existing classes
-
-```
-    x <-  predict(model.x, adelmo)
-    x <- as.data.frame(x)
-    names(x) <- c(Model.Name)
-    adelmo <- cbind(adelmo, x)
-```
-
-As the result we are receiving the next picture.
-![](Form1.png)
-
-All results are given in percent.
-And the distribution of the prediction versus the existing class showed below:
-![](plot1.png)
-
-###Step 4
-As expected before, the range of models results is quite strong. Now apply the training results received by the method "knn" (as an option).
-
-```
-  adelmo <- cbind(adelmo, classe)
-  model.x2 <- train(classe~Model.2+Model.4+Model.5+Model.6+Model.7+Model.8+Model.9+Model.10+
-                      Model.11+Model.12, data =adelmo ,  method="knn")
-  #save common model for prediction result dataset
-  saveRDS(model.x2, paste0("Model.Common.", "-", personal.name[j],".Rev.1.rds"))
-  adelmo$model.x2 <- predict(model.x2, adelmo)
-  #save all data to file
-  saveRDS(adelmo, paste0("B.", "-", personal.name[j],".Rev.1.rds"))
+Let's prepare the middle calculation result:
+```{r}
+Middle.Result <- matrix(nrow = 5, ncol =methods.length+2) # result of STEP 1
+Middle.Result <- as.data.frame(Middle.Result)
+# names for two fisrt column
+names(Middle.Result)[1] <- "Char.Group.Name"
+names(Middle.Result)[2] <- "Num.Group.Name"
+# fullfil names of our groups
+Middle.Result$Num.Group.Name <- c(1:5)
+Middle.Result$Char.Group.Name <- c("A", "B", "C", "D", "E")
+# names for the rest of column
+for (k in 1:methods.length) {
+  names(Middle.Result)[k+2] <- paste0("X.", k)
+  Middle.Result[ ,k+2] <- 0
+}  
+Middle.Result_0 <- Middle.Result # save a copy of table
+# calculate the middle result
+limits <- matrix(nrow = 2, ncol = 5, data = c(c(0, 1.5), c(1.5, 2.5), c(2.5, 3.5), c(3.5, 4.5), c(4.5, 7))); limits <- as.data.frame(limits)
+for (i in 1:methods.length) {
+    for (j in 1:5) {
+      A.selected <- A[which(A$Group==j), ]  # select the current group 
+      total.row <- nrow(A.selected) # total of the items
+      A.selected <- A.selected[which(A.selected[, 55+i]>limits[1,j] & A.selected[, 55+i]<=limits[2,j] ), ] # select all in the range
+      Middle.Result[j, 2+i] <- nrow(A.selected)/total.row # calculation of the result
+    }
+}
 ```
 
-And the result of our final model is the next.
-![](Form2.png)
-
-###Step 5
-Lets check the result model on the testing dataset.
-
+As the middle result we are receiving:
+```{r}
+Middle.Result2 <- Middle.Result
+Middle.Result2 <- Middle.Result2[, -2]
+add.to.MR2 <- c()
+# i<-2
+names(Middle.Result2)[1] <- "Group"
+for (i in 1:methods.length) {
+  names(Middle.Result2)[1+i] <- method.names[i]
+  Middle.Result2[,1+i] <- Middle.Result2[,1+i]*100
+  b <- sum(Middle.Result2[,1+i])/5
+  add.to.MR2 <- cbind(add.to.MR2, b)
+}
+add.to.MR2 <- cbind("Average", add.to.MR2)
+add.to.MR2 <- as.data.frame(add.to.MR2)
+names(add.to.MR2) <- names(Middle.Result2)
+for (i in 2:(methods.length+1)) { add.to.MR2[ ,i] <- as.numeric(as.character(add.to.MR2[ ,i]))}
+Middle.Result2 <- rbind(Middle.Result2, add.to.MR2)
+pander(Middle.Result2) #nice table with result
 ```
-    model.x <- readRDS(file = paste0("Model.",as.character(i),"-",personal.name[j],".Rev.1.rds"))
-    Model.Name <- paste0("Model.", as.character(i))
-    x <-  predict(model.x, adelmo)
-    x <- as.data.frame(x)
-    names(x) <- c(Model.Name)
-    adelmo <- cbind(adelmo, x)
+as percent of accuracy by each training method.
+
+## 9 Calculation for STEP 2
+Let's define method number 14 (rf) as the best result train method.  
+Now, using the result of STEP 1 I will make new training:
+```{r}
+# start the calculation
+best.method <- 14 # rf method
+A.selected <- A[ , 55:70]
+    
+cl <- makeCluster(detectCores())
+registerDoParallel(cl) # Register workers (cores)
+model.x2 <- train(Group~., data=A.selected, method=method.names[best.method])
+stopCluster(cl) # Closing parallel processing session
+
+A$STEP.2 <-  predict(model.x2, A[ , 56:70]) # result for training set
+B$STEP.2 <-  predict(model.x2, B[ , 56:70]) # result for testing part of training set
+A.test$STEP.2 <-  predict(model.x2, A.test[ , 56:70]) # calculation for result set
 ```
 
-Comparing to the latest Course Quiz:
-B A B A A E D B A A B C B A E E A B B B
-100% hit the target without deviation!
+## 10 Result of the STEP 2
 
-##Conclusions
-As a result of applying re-training results improved significantly. I honestly didn't expect that a training example can reach a very good result with a probability of 99%++. Thus it was possible to follow by the same path as the Groupware@LES group, and get a decent result.
+And the STEP 2 result will be:
+```{r}
+  Middle.Result <- Middle.Result_0
+  # calculate the STEP 2 result
+  for (i in best.method:best.method) {
+    for (j in 1:5) {
+      A.selected <- A[which(A$Group==j), ]  # select the current group 
+      total.row <- nrow(A.selected)
+      A.selected <- A.selected[which(A.selected$STEP.2>limits[1,j] & A.selected$STEP.2<=limits[2,j] ), ]
+      Middle.Result[j, 2+i] <- nrow(A.selected)/total.row*100
+    }
+  }
+  
+  Middle.Result3 <- Middle.Result
+  Middle.Result3 <- Middle.Result3[, -2]
+  add.to.MR2 <- c()
+
+  names(Middle.Result3)[1] <- "Group"
+  for (i in 1:methods.length) {
+    names(Middle.Result3)[1+i] <- method.names[i]
+    Middle.Result3[,1+i] <- Middle.Result3[,1+i]
+    b <- sum(Middle.Result3[,1+i])/5
+    add.to.MR2 <- cbind(add.to.MR2, b)
+  }
+  add.to.MR2 <- cbind("Average", add.to.MR2)
+  add.to.MR2 <- as.data.frame(add.to.MR2)
+  names(add.to.MR2) <- names(Middle.Result3)
+  for (i in 2:(methods.length+1)) { add.to.MR2[ ,i] <- as.numeric(as.character(add.to.MR2[ ,i]))}
+  Middle.Result3 <- rbind(Middle.Result3, add.to.MR2)
+  Middle.Result3 <- Middle.Result3[ , c(1,best.method+1) ]
+  
+  pander(Middle.Result3)
+```
+
+So. The result is not bad. Let's check it on the test data set.
+Hereafter the plot of the result:
+```{r}
+A$classe <- as.factor(A$classe)
+qplot(x = A$classe, y = A$STEP.2, data= A) 
+```
+Where A coded like 1, B - like 2, C - 3, D - 4, E - 5.
+
+
+## 11 Testing the model on the testing part of training data set
+
+So the data of testing part of training set already calculated and we colud just to see the result:
+```{r}
+  Middle.Result <- Middle.Result_0
+  # calculate the STEP 2 result
+  for (i in best.method:best.method) {
+    for (j in 1:5) {
+      B.selected <- B[which(B$Group==j), ]  # select the current group 
+      total.row <- nrow(B.selected)
+      B.selected <- B.selected[which(B.selected$STEP.2>limits[1,j] & B.selected$STEP.2<=limits[2,j] ), ]
+      Middle.Result[j, 2+i] <- nrow(B.selected)/total.row
+    }
+  }
+  
+  Middle.Result3 <- Middle.Result
+  Middle.Result3 <- Middle.Result3[, -2]
+  add.to.MR2 <- c()
+
+  names(Middle.Result3)[1] <- "Group"
+  for (i in 1:methods.length) {
+    names(Middle.Result3)[1+i] <- method.names[i]
+    Middle.Result3[,1+i] <- Middle.Result3[,1+i]*100
+    b <- sum(Middle.Result3[,1+i])/5
+    add.to.MR2 <- cbind(add.to.MR2, b)
+  }
+  add.to.MR2 <- cbind("Average", add.to.MR2)
+  add.to.MR2 <- as.data.frame(add.to.MR2)
+  names(add.to.MR2) <- names(Middle.Result3)
+  for (i in 2:(methods.length+1)) { add.to.MR2[ ,i] <- as.numeric(as.character(add.to.MR2[ ,i]))}
+  Middle.Result3 <- rbind(Middle.Result3, add.to.MR2)
+  Middle.Result3 <- Middle.Result3[ , c(1,best.method+1) ]
+  
+  pander(Middle.Result3)
+```
+I think it's a realy good result.
+
+
+## 12 RESULT
+
+```{r}
+Class.As.Char <- function(x) {
+  x$classe <- 0
+  x$classe[which(x$STEP.2>=0 & x$STEP.2<1.5)] <- "A"
+  x$classe[which(x$classe>=1.5 & x$STEP.2<2.5)] <- "B"
+  x$classe[which(x$classe>=2.5 & x$STEP.2<3.5)] <- "C"
+  x$classe[which(x$classe>=3.5  & x$STEP.2<4.5)] <- "D"
+  x$classe[which(x$classe>=4.5)] <- "E"
+  return(x)
+}
+A.test<- Class.As.Char(A.test)
+```
+
+
+As expected, the range of models results is quite strong. 
+
+Hereafter the final result:
+```{r}
+A.test.Result <- c(1:20)
+A.test.Result <- as.data.frame(A.test.Result)
+A.test.Result <- cbind(A.test.Result, A.test$classe)
+A.test.Result <- as.data.frame(t(A.test.Result))
+pander(A.test.Result)
+```
+
+
+As a result of applying re-training results improved significantly. I honestly didn't expect that a training example can reach a very good result with a probability of 98%++. Thus it was possible to follow by the same path as the Groupware@LES group, and get a decent result.
+
 
 Special note is the using of multi-threaded calculations. Without using this package, the result would have been much later.
 
