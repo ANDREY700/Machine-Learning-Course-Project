@@ -42,9 +42,9 @@ Setting up libraries and working directory:
 ```{r}
 library(caret)
 library(doParallel) # for parallel calculation
+library(plyr)
 library(dplyr)
 library(ggplot2)
-#library(cowplot)
 library(pander)
 library(sqldf)
 
@@ -139,7 +139,7 @@ A <- A[inTrain, ] # part for training
 ```
 
 Starting learning process for each personal name as STEP 1:
-```{r}
+```{r,  echo=FALSE}
 Flag <- 0
 for (j in 1:methods.length) {
     print(paste0(j, "+", " : ", method.names[j]))
@@ -211,7 +211,7 @@ as percent of accuracy by each training method.
 ## 9 Calculation for STEP 2
 Let's define method number 14 (rf) as the best result train method.  
 Now, using the result of STEP 1 I will make new training:
-```{r}
+```{r,  echo=FALSE}
 # start the calculation
 best.method <- 14 # rf method
 A.selected <- A[ , 55:70]
@@ -313,12 +313,11 @@ I think it's a realy good result.
 
 ```{r}
 Class.As.Char <- function(x) {
-  x$classe <- 0
   x$classe[which(x$STEP.2>=0 & x$STEP.2<1.5)] <- "A"
-  x$classe[which(x$classe>=1.5 & x$STEP.2<2.5)] <- "B"
-  x$classe[which(x$classe>=2.5 & x$STEP.2<3.5)] <- "C"
-  x$classe[which(x$classe>=3.5  & x$STEP.2<4.5)] <- "D"
-  x$classe[which(x$classe>=4.5)] <- "E"
+  x$classe[which(x$STEP.2>=1.5 & x$STEP.2<2.5)] <- "B"
+  x$classe[which(x$STEP.2>=2.5 & x$STEP.2<3.5)] <- "C"
+  x$classe[which(x$STEP.2>=3.5  & x$STEP.2<4.5)] <- "D"
+  x$classe[which(x$STEP.2>=4.5)] <- "E"
   return(x)
 }
 A.test<- Class.As.Char(A.test)
@@ -337,7 +336,7 @@ pander(A.test.Result)
 ```
 
 
-As a result of applying re-training results improved significantly. I honestly didn't expect that a training example can reach a very good result with a probability of 98%++. Thus it was possible to follow by the same path as the Groupware@LES group, and get a decent result.
+As a result of applying re-training results improved significantly. I honestly didn't expect that a training example can reach a very good result with a probability of 99%++. Thus it was possible to follow by the same path as the Groupware@LES group, and get a decent result.
 
 
 Special note is the using of multi-threaded calculations. Without using this package, the result would have been much later.

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -150,9 +150,14 @@ $(document).ready(function () {
 <pre><code>## Loading required package: foreach</code></pre>
 <pre><code>## Loading required package: iterators</code></pre>
 <pre><code>## Loading required package: parallel</code></pre>
-<pre class="r"><code>library(dplyr)</code></pre>
+<pre class="r"><code>library(plyr)
+library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:plyr':
+## 
+##     arrange, count, desc, failwith, id, mutate, rename, summarise,
+##     summarize</code></pre>
 <pre><code>## The following object is masked from 'package:stats':
 ## 
 ##     filter</code></pre>
@@ -160,7 +165,6 @@ $(document).ready(function () {
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(ggplot2)
-#library(cowplot)
 library(pander)
 library(sqldf)</code></pre>
 <pre><code>## Loading required package: gsubfn</code></pre>
@@ -255,20 +259,6 @@ inTrain &lt;- createDataPartition(y=A$classe, p=0.9, list=F)
 B &lt;- A[-inTrain, ] # part for checking the result of modeling
 A &lt;- A[inTrain, ] # part for training</code></pre>
 <p>Starting learning process for each personal name as STEP 1:</p>
-<pre class="r"><code>Flag &lt;- 0
-for (j in 1:methods.length) {
-    print(paste0(j, &quot;+&quot;, &quot; : &quot;, method.names[j]))
-    A.selected &lt;- A[ , c(2:53, 55)]
-    
-    cl &lt;- makeCluster(detectCores())
-    registerDoParallel(cl) # Register workers (cores)
-    model.x &lt;- train(Group~., data=A.selected, method=method.names[j]) # training line
-    stopCluster(cl) # Closing parallel processing session
-  
-    A[ , 55+j] &lt;-  predict(model.x, A[ , 2:53]) # checking the result on training part       
-    B[ , 55+j] &lt;-  predict(model.x, B[ , 2:53]) # the same for checking part
-    A.test[ , 55+j] &lt;-  predict(model.x, A.test[ , 2:53]) # apply for result testing set
-}</code></pre>
 <pre><code>## [1] &quot;1+ : enet&quot;</code></pre>
 <pre><code>## Loading required package: elasticnet</code></pre>
 <pre><code>## Loading required package: lars</code></pre>
@@ -294,8 +284,107 @@ for (j in 1:methods.length) {
 ## 
 ##     gam, gam.control, gam.fit, plot.gam, predict.gam, s,
 ##     summary.gam</code></pre>
-<pre><code>## Warning in gam.lo(data[[&quot;lo(yaw_dumbbell, span = 0.5, degree = 1)&quot;]], z, :
+<pre><code>## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations
+
+## Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit,
+## : lo.wam convergence not obtained in 30 iterations</code></pre>
+<pre><code>## Warning in gam.lo(data[[&quot;lo(gyros_belt_x, span = 0.5, degree = 1)&quot;]], z, :
+## eval -1.04</code></pre>
+<pre><code>## Warning in gam.lo(data[[&quot;lo(gyros_belt_x, span = 0.5, degree = 1)&quot;]], z, :
+## lowerlimit -1.0161</code></pre>
+<pre><code>## Warning in gam.lo(data[[&quot;lo(gyros_belt_x, span = 0.5, degree = 1)&quot;]], z, :
 ## extrapolation not allowed with blending</code></pre>
+<pre><code>## Warning in gam.lo(data[[&quot;lo(magnet_belt_y, span = 0.5, degree = 1)&quot;]], z,
+## : eval 673</code></pre>
+<pre><code>## Warning in gam.lo(data[[&quot;lo(magnet_belt_y, span = 0.5, degree = 1)&quot;]], z,
+## : upperlimit 670.58</code></pre>
+<pre><code>## Warning in gam.lo(data[[&quot;lo(magnet_belt_y, span = 0.5, degree = 1)&quot;]], z,
+## : extrapolation not allowed with blending</code></pre>
 <pre><code>## [1] &quot;5+ : gbm&quot;</code></pre>
 <pre><code>## Loading required package: gbm</code></pre>
 <pre><code>## Loading required package: survival</code></pre>
@@ -305,37 +394,25 @@ for (j in 1:methods.length) {
 ## 
 ##     cluster</code></pre>
 <pre><code>## Loaded gbm 2.1</code></pre>
-<pre><code>## Loading required package: plyr</code></pre>
-<pre><code>## -------------------------------------------------------------------------</code></pre>
-<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)</code></pre>
-<pre><code>## -------------------------------------------------------------------------</code></pre>
-<pre><code>## 
-## Attaching package: 'plyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:dplyr':
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize</code></pre>
 <pre><code>## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
-##      1        2.0191             nan     0.1000    0.1578
-##      2        1.8880             nan     0.1000    0.1353
-##      3        1.7867             nan     0.1000    0.1002
-##      4        1.6905             nan     0.1000    0.0959
-##      5        1.6037             nan     0.1000    0.0863
-##      6        1.5295             nan     0.1000    0.0713
-##      7        1.4677             nan     0.1000    0.0623
-##      8        1.4019             nan     0.1000    0.0659
-##      9        1.3465             nan     0.1000    0.0549
-##     10        1.2995             nan     0.1000    0.0436
-##     20        1.0251             nan     0.1000    0.0170
-##     40        0.7499             nan     0.1000    0.0112
-##     60        0.6137             nan     0.1000    0.0051
-##     80        0.5322             nan     0.1000    0.0031
-##    100        0.4687             nan     0.1000    0.0054
-##    120        0.4213             nan     0.1000    0.0018
-##    140        0.3866             nan     0.1000    0.0017
-##    150        0.3732             nan     0.1000    0.0015
+##      1        2.0196             nan     0.1000    0.1587
+##      2        1.8883             nan     0.1000    0.1330
+##      3        1.7875             nan     0.1000    0.0999
+##      4        1.6917             nan     0.1000    0.0937
+##      5        1.5952             nan     0.1000    0.0960
+##      6        1.5197             nan     0.1000    0.0752
+##      7        1.4596             nan     0.1000    0.0595
+##      8        1.3969             nan     0.1000    0.0614
+##      9        1.3461             nan     0.1000    0.0475
+##     10        1.2996             nan     0.1000    0.0466
+##     20        1.0048             nan     0.1000    0.0189
+##     40        0.7619             nan     0.1000    0.0074
+##     60        0.6174             nan     0.1000    0.0042
+##     80        0.5282             nan     0.1000    0.0035
+##    100        0.4645             nan     0.1000    0.0016
+##    120        0.4213             nan     0.1000    0.0012
+##    140        0.3830             nan     0.1000    0.0015
+##    150        0.3665             nan     0.1000    0.0007
 ## 
 ## [1] &quot;6+ : glm&quot;
 ## [1] &quot;7+ : glmboost&quot;</code></pre>
@@ -452,57 +529,57 @@ pander(Middle.Result2) #nice table with result</code></pre>
 <tbody>
 <tr class="odd">
 <td align="center">A</td>
-<td align="center">39.96</td>
-<td align="center">39.98</td>
-<td align="center">74.31</td>
-<td align="center">60.81</td>
-<td align="center">64.81</td>
-<td align="center">39.96</td>
+<td align="center">39.84</td>
+<td align="center">39.84</td>
+<td align="center">74.91</td>
+<td align="center">61.25</td>
+<td align="center">65.51</td>
+<td align="center">39.84</td>
 </tr>
 <tr class="even">
 <td align="center">B</td>
-<td align="center">37.13</td>
-<td align="center">37.13</td>
-<td align="center">67.09</td>
-<td align="center">60.83</td>
-<td align="center">62.38</td>
-<td align="center">37.13</td>
+<td align="center">36.78</td>
+<td align="center">36.78</td>
+<td align="center">66.71</td>
+<td align="center">60.04</td>
+<td align="center">63.6</td>
+<td align="center">36.78</td>
 </tr>
 <tr class="odd">
 <td align="center">C</td>
-<td align="center">64.48</td>
-<td align="center">64.48</td>
-<td align="center">77.37</td>
-<td align="center">75.06</td>
-<td align="center">87.53</td>
-<td align="center">64.48</td>
+<td align="center">64.55</td>
+<td align="center">64.51</td>
+<td align="center">77.31</td>
+<td align="center">75.03</td>
+<td align="center">87.63</td>
+<td align="center">64.55</td>
 </tr>
 <tr class="even">
 <td align="center">D</td>
-<td align="center">38.48</td>
-<td align="center">38.48</td>
-<td align="center">54.75</td>
+<td align="center">38.2</td>
+<td align="center">38.2</td>
+<td align="center">54.02</td>
 <td align="center">45.66</td>
-<td align="center">47.94</td>
-<td align="center">38.48</td>
+<td align="center">48.74</td>
+<td align="center">38.2</td>
 </tr>
 <tr class="odd">
 <td align="center">E</td>
-<td align="center">25.22</td>
-<td align="center">25.25</td>
-<td align="center">64.27</td>
-<td align="center">54.57</td>
-<td align="center">55.31</td>
-<td align="center">25.22</td>
+<td align="center">24.67</td>
+<td align="center">24.64</td>
+<td align="center">63.97</td>
+<td align="center">54.3</td>
+<td align="center">55.34</td>
+<td align="center">24.67</td>
 </tr>
 <tr class="even">
 <td align="center">Average</td>
-<td align="center">41.06</td>
-<td align="center">41.07</td>
-<td align="center">67.56</td>
-<td align="center">59.39</td>
-<td align="center">63.6</td>
-<td align="center">41.06</td>
+<td align="center">40.81</td>
+<td align="center">40.8</td>
+<td align="center">67.38</td>
+<td align="center">59.26</td>
+<td align="center">64.17</td>
+<td align="center">40.81</td>
 </tr>
 </tbody>
 </table>
@@ -530,58 +607,58 @@ pander(Middle.Result2) #nice table with result</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">23.06</td>
-<td align="center">27.16</td>
+<td align="center">23.08</td>
+<td align="center">27.08</td>
 <td align="center">0</td>
-<td align="center">93.89</td>
-<td align="center">39.96</td>
-<td align="center">37.55</td>
-<td align="center">39.96</td>
+<td align="center">94.21</td>
+<td align="center">39.84</td>
+<td align="center">35.56</td>
+<td align="center">39.84</td>
 </tr>
 <tr class="even">
-<td align="center">29.52</td>
-<td align="center">33.91</td>
-<td align="center">18.67</td>
-<td align="center">88.41</td>
-<td align="center">37.13</td>
-<td align="center">38.65</td>
-<td align="center">37.13</td>
+<td align="center">29.05</td>
+<td align="center">33.7</td>
+<td align="center">18.11</td>
+<td align="center">87.77</td>
+<td align="center">36.78</td>
+<td align="center">38.94</td>
+<td align="center">36.78</td>
 </tr>
 <tr class="odd">
-<td align="center">77.18</td>
-<td align="center">73.77</td>
-<td align="center">70.32</td>
-<td align="center">95.36</td>
-<td align="center">64.48</td>
-<td align="center">66.75</td>
-<td align="center">64.48</td>
+<td align="center">77.05</td>
+<td align="center">74.81</td>
+<td align="center">70.42</td>
+<td align="center">95.06</td>
+<td align="center">64.55</td>
+<td align="center">67.95</td>
+<td align="center">64.55</td>
 </tr>
 <tr class="even">
-<td align="center">12.64</td>
-<td align="center">31.47</td>
-<td align="center">2.038</td>
-<td align="center">92.64</td>
-<td align="center">38.48</td>
-<td align="center">38.34</td>
-<td align="center">38.48</td>
+<td align="center">12.37</td>
+<td align="center">31.36</td>
+<td align="center">1.727</td>
+<td align="center">93.13</td>
+<td align="center">38.2</td>
+<td align="center">38.13</td>
+<td align="center">38.2</td>
 </tr>
 <tr class="odd">
-<td align="center">1.663</td>
-<td align="center">11.09</td>
+<td align="center">1.54</td>
+<td align="center">10.75</td>
 <td align="center">0</td>
-<td align="center">83.58</td>
-<td align="center">25.22</td>
-<td align="center">22.73</td>
-<td align="center">25.22</td>
+<td align="center">82.94</td>
+<td align="center">24.67</td>
+<td align="center">20.36</td>
+<td align="center">24.67</td>
 </tr>
 <tr class="even">
-<td align="center">28.81</td>
-<td align="center">35.48</td>
-<td align="center">18.21</td>
-<td align="center">90.78</td>
-<td align="center">41.06</td>
+<td align="center">28.62</td>
+<td align="center">35.54</td>
+<td align="center">18.05</td>
+<td align="center">90.62</td>
 <td align="center">40.81</td>
-<td align="center">41.06</td>
+<td align="center">40.19</td>
+<td align="center">40.81</td>
 </tr>
 </tbody>
 </table>
@@ -598,28 +675,28 @@ pander(Middle.Result2) #nice table with result</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">99.86</td>
-<td align="center">31.06</td>
+<td align="center">99.84</td>
+<td align="center">31.16</td>
 </tr>
 <tr class="even">
 <td align="center">99.97</td>
-<td align="center">29.26</td>
+<td align="center">29.05</td>
 </tr>
 <tr class="odd">
 <td align="center">100</td>
-<td align="center">69.16</td>
+<td align="center">68.6</td>
 </tr>
 <tr class="even">
 <td align="center">100</td>
-<td align="center">33.99</td>
+<td align="center">33.44</td>
 </tr>
 <tr class="odd">
-<td align="center">99.69</td>
-<td align="center">5.42</td>
+<td align="center">99.82</td>
+<td align="center">4.835</td>
 </tr>
 <tr class="even">
-<td align="center">99.9</td>
-<td align="center">33.78</td>
+<td align="center">99.93</td>
+<td align="center">33.42</td>
 </tr>
 </tbody>
 </table>
@@ -629,21 +706,9 @@ pander(Middle.Result2) #nice table with result</code></pre>
 <h2>9 Calculation for STEP 2</h2>
 <p>Let’s define method number 14 (rf) as the best result train method.<br />
 Now, using the result of STEP 1 I will make new training:</p>
-<pre class="r"><code># start the calculation
-best.method &lt;- 14 # rf method
-A.selected &lt;- A[ , 55:70]
-    
-cl &lt;- makeCluster(detectCores())
-registerDoParallel(cl) # Register workers (cores)
-model.x2 &lt;- train(Group~., data=A.selected, method=method.names[best.method])</code></pre>
 <pre><code>## Warning in randomForest.default(x, y, mtry = param$mtry, ...): The
 ## response has five or fewer unique values.  Are you sure you want to do
 ## regression?</code></pre>
-<pre class="r"><code>stopCluster(cl) # Closing parallel processing session
-
-A$STEP.2 &lt;-  predict(model.x2, A[ , 56:70]) # result for training set
-B$STEP.2 &lt;-  predict(model.x2, B[ , 56:70]) # result for testing part of training set
-A.test$STEP.2 &lt;-  predict(model.x2, A.test[ , 56:70]) # calculation for result set</code></pre>
 </div>
 <div id="result-of-the-step-2" class="section level2">
 <h2>10 Result of the STEP 2</h2>
@@ -678,10 +743,10 @@ A.test$STEP.2 &lt;-  predict(model.x2, A.test[ , 56:70]) # calculation for resul
   Middle.Result3 &lt;- Middle.Result3[ , c(1,best.method+1) ]
   
   pander(Middle.Result3)</code></pre>
-<table style="width:18%;">
+<table style="width:17%;">
 <colgroup>
 <col width="11%"></col>
-<col width="6%"></col>
+<col width="5%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -692,34 +757,34 @@ A.test$STEP.2 &lt;-  predict(model.x2, A.test[ , 56:70]) # calculation for resul
 <tbody>
 <tr class="odd">
 <td align="center">A</td>
-<td align="center">99,98</td>
+<td align="center">100</td>
 </tr>
 <tr class="even">
 <td align="center">B</td>
-<td align="center">100,00</td>
+<td align="center">100</td>
 </tr>
 <tr class="odd">
 <td align="center">C</td>
-<td align="center">100,00</td>
+<td align="center">100</td>
 </tr>
 <tr class="even">
 <td align="center">D</td>
-<td align="center">100,00</td>
+<td align="center">100</td>
 </tr>
 <tr class="odd">
 <td align="center">E</td>
-<td align="center">100,00</td>
+<td align="center">100</td>
 </tr>
 <tr class="even">
 <td align="center">Average</td>
-<td align="center">100,00</td>
+<td align="center">100</td>
 </tr>
 </tbody>
 </table>
 <p>So. The result is not bad. Let’s check it on the test data set. Hereafter the plot of the result:</p>
 <pre class="r"><code>A$classe &lt;- as.factor(A$classe)
 qplot(x = A$classe, y = A$STEP.2, data= A) </code></pre>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAAD1BMVEUAAAB/f3/l5eXy8vL////fPqQoAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3dgVIbWboEYTHL+z/zvd71WFIL8E/TR13Kyi9iwzZj2JMtTQ1YQr68S5J2uZx9AEl6VQ6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTg6oJO3kgErSTqsH9J8YSWdZylCaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwO3M8H9O1fDmgGQ2laQqM6HdCNpLMsZShNS2hU5xMH9Kt/evZluEo6y1KG0rSERnU+a0C/3s+gK5J0lqUMpSkJvfxy9iH+cEA3ks6ylKE0HaGXS9SCOqAbSWdZylCaitDLJWtBnzignz6C5ICewVCahtDLJWxBnzegDw/Cv9346YeXVOBmQM8+yrf89LT/buTtVjqgkr6ld0C3P7l39ifiV0lnWcpQmobQ2i/h//h4Qc++DFdJZ1nKUJqGUAfUAQ1hKE1FaNh+OqBbSWdZylCajtCs/XRAt5LOspShNCWhUfv5rAG9zqYDGsJQmpbQqM6nDejbV/sZdEWSzrKUoTQtoVGdTxrQ9w+eB+qAnspQmpbQqM5nDej710+ZP/syXCWdZSlDaVpCozqfNqDvX37H0dmX4SrpLEsZStMSGtX5vAH90tmX4SrpLEsZStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cCtHtD/xEg6y1KG0rSERnUOB87PQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKMzll7MP8QxRN+hw4BxQHENZLpeWBY26QYcD54DiGIpyudQsaNQNOhw4BxTHUJLLpWdBo27Q4cAdNaBvbw5oCENJHNCTPHdA3xzQGIaSOKAneeqAvjmgOQwlcUBP4oBuJJ1lKUNJHNCTPHNA/389HdAYhqL07GfWDeqAbiSdZSlDURzQczxxQH+NpwMaw1ASv4Q/yfMG9G07oG83fv7hpWI3A3r2UfSBQwb03QGVlnBAs/38VvnfSPolfAxDSfwS/iQO6EbSWZYylMQBPcmzBvT3cjqgMQxF6dnPrBv0SQP65oCmMZSlZj+zbtDnDeiXDxidfRmuks6ylKEwLfuZdYM6oBtJZ1nKUJqW0KjOJw3odUg/fvvZl+Eq6SxLGUrTEhrV6YBuJJ1lKUNpWkKjOh3QjaSzLGUoTUtoVKcDupF0lqUMpWkJjep88oB+5uzLcJV0lqUMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOBWD+h/YiSdZSlDaVpCozqHA+dnoDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDtxgQC+/3P/aAQ1mKE1LaFTnUQN6+ZcD+iIMpWkJjeo8aEAvl4cFdUCzGUrTEhrVeeCA3v7ogMYzlKYlNKrzmAH9aDcd0GyG0rSERnUeNqAPP3dAsxlK0xIa1Xn8gL5fv5p3QIMZStMSGtW5YEB//8oBzWYoTUtoVOeKAX13QF+AoTQtoVGdiwb04oCmM5SmJTSq87ABfVhQBzSboTQtoVGdxwzow1puvivJAc1jKE1LaFTncQP68DmoAxrNUJqW0KjOgwb04Yv4xzc4oFkMpWkJjeo8akB/P/T+5Rsc0CSG0rSERnUeN6A/cvZluEo6y1KG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA7cjgH1UfhshtK0hEZ1OqAbSWdZylCaltCoTgd0I+ksSxlK0xIa1bluQL/l7MtwlXSWpQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HLjR98J/7/VDHNBzGUrTEhrVedSAXv5wQF+DoTQtoVGdBw3o5fKzBT37MlwlnWUpQ2laQqM6DxzQ2x8d0HiG0rSERnUeM6DX3dy5oGdfhquksyxlKE1LaFTnYQP6wU8d0GSG0rSERnU6oBtJZ1nKUJqW0KhOB3Qj6SxLGUrTEhrV6YBuJJ1lKUNpWkKjOh3QjaSzLGUoTUtoVKcDupF0lqUMpWkJjep0QDeSzrKUoTQtoVGdDuhG0lmWMpSmJTSq0wHdSDrLUobStIRGdR42oB9xQIMZStMSGtXpgG4knWUpQ2laQqM6HdCNpLMsZShNS2hU5zED+mNnX4arpLMsZShNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HbseA+ih8NkNpWkKjOo8Z0I/G0gHNZihNS2hU58EDuvd7Os++DFdJZ1nKUJqW0KhOB3Qj6SxLGUrTEhrV6YBuJJ1lKUNpWkKjOh3QjaSzLGUoTUtoVKcDupF0lqUMpWkJjep0QDeSzrKUoTQtoVGdDuhG0lmWMpSmJTSq0wHdSDrLUobStIRGdTqgG0lnWcpQmpbQqE4HdCPpLEsZStMSGtXpgG4knWUpQ2laQqM6DxtQ/0qPF2MoTUtoVKcDupF0lqUMpWkJjep0QDeSzrKUoTQtoVGdxwzoxNsvDmgMQ2laQqM6nzagb785oCEMpWkJjep81oD+nk4HNIahNC2hUZ1PGtA/n3p+sqBnX4arpLMs1RL63z+NP/sQT9Fyi0Z1HjOgf33A6M9uOqApSkJ/P5559jGeoeQWzep80oA+LqkDerKO0D/PCDn7IE/QcYuGdTqgG0lnWaoi9OY5dWcfZb2KW/SfsM7nDujdo/BvN4bHkL5l15OSpaMdMaDbpXRAtZoDqgiHDahPY0pREeqX8EBRnU8c0N8r6oBmqAh1QIGiOp89oJ8s6NmX4SrpLEt1hBbtZ8ktGtZ52IBOX0zEAQ1REtqzny23aFanA7qRdJalWkJr9rPmFo3qfNKAXmfTAQ1hKE1LaFTnYQP69W+4+V54BzSDoTQtoVGdTxrQfz/x/Ox5TGdfhquksyxlKE1LaFTnswbU1wNNYyhNS2hU59MG1FekD2MoTUtoVOfzBvRLZ1+Gq6SzLGUoTUtoVKcDupF0lqUMpWkJjep0QDeSzrKUoTQtoVGdDuhG0lmWMpSmJTSq85gB/bGzL8NV0lmWMpSmJTSqczhwDiiOoTQtoVGdw4H71oDueP3asy/DVdJZljKUpiU0qvO4Af0zmnteAfzsy3CVdJalDKVpCY3qPGxA/2zmrr9D4ezLcJV0lqUMpWkJjeo8akD/TObvH7+5oGdfhquksyxlKE1LaFTnQQN6uf0C/u5HBzSUoTQtoVGdxw3oZ0vqgGYylKYlNKrzmAG9juVHP3NAExlK0xIa1emAbiSdZSlDaVpCozod0I2ksyxlKE1LaFTnwQN6s5oOaDZDaVpCozod0I2ksyxlKE1LaFSnA7qRdJalDKVpCY3qPGxAt8/+9Hmg4QylaQmN6jxmQG++/+jmLQ5oMkNpWkKjOg8c0NvvgP/uN8OffRmuks6ylKE0LaFRnQcN6PvdfvpiIi/AUJqW0KjOowb07uVDfDm7F2AoTUtoVOdxA3q/pd/6/UlXJOksSxlK0xIa1blkQL/v7MtwlXSWpQylaQmN6hwOnAOKYyhNS2hU53Dg/DuRcAylaQmN6jxuQDd/JZIPIoUzlKYlNKrzqAF9/CuRfBpTNkNpWkKjOg8a0PvngL7fPanJAY1kKE1LaFTncQN6XdL7nzigmQylaQmN6jxmQH1B5ddjKE1LaFSnA7qRdJalDKVpCY3qPGRAL59zQFMZStMSGtXpgG4knWUpQ2laQqM6DxlQX5H+BRlK0xIa1XnsgN6OpgOazVCaltCozmMG9N+19BXpX4ehNC2hUZ3HDej9H3r6RPp0htK0hEZ1HjSgm++A91s58xlK0xIa1XnUgN5vpi8mks9QmpbQqM7DBvT+t/uK9PEMpWkJjepcM6DfdvZluEo6y1KG0rSERnUOB27XgPo0pmSG0rSERnUuG1BfjSmcoTQtoVGdawb02y+pfPZluEo6y1KG0rSERnWuGNAdL0l/9mW4SjrLUobStIRGdR4+oHv+Qo+kK5J0lqUMpWkJjeo8dkD3racDegZDaVpCozqPHNBvv4idA3oiQ2laQqM6DxvQ63Y6oC/BUJqW0KjOYwb07jNPB/QlGErTEhrVeeSAXn/hgOYzlKYlNKrzsAH95BcOaCpDaVpCozoPG1A/A30xhtK0hEZ1Hjmg/hnoKzGUpiU0qvOYAX33UfiXYyhNS2hU52ED+u7zQF+LoTQtoVGdRw6o34n0SgylaQmN6jx2QHdv6NmX4SrpLEsZStMSGtV5+IDu29CzL8NV0lmWMpSmJTSqc8WA+nqgr8BQmpbQqM41A/ruK9LHM5SmJTSqc9mAfu+dzr4MV0lnWcpQmpbQqM6VA/oNZ1+Gq6SzLGUoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwO3ekD/EyPpLEsZStMSGtU5HDg/A8UxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4A4Y0Lf/ckBTGErTEhrV+bQBfXv7akHPvgxXSWdZ6fLL2Yd4ipZbtCY0qvNZA/p7Oj9b0LMvw1XSWRa6XGoWtOQW7QmN6nzSgP7ZzU8W9OzLcJV0lnUul54F7bhF/+kJjep89oC+O6ABLpeiBa24RX9pCY3qfNKAXjmgARxQopbQqE4HdCPpLMs4oEQtoVGdJw7o243DPrwmbgb07KNIBQ779+xmKx3Q0zig0jMd9e+ZzwON4JfwRC2hUZ3PHVCfSJ/BASVqCY3qfOqA+q2cIRxQopbQqM5nDugXf9Z59mW4SjrLOkX7WXKL/tMTGtX5xAH96rGisy/DVdJZFurZz5ZbtCc0qvN5A/rlY+1nX4arpLOsVLOfNbdoTWhU59MG9OunKp19Ga6SzrKUoTQtoVGdzxrQvzzV8+zLcJV0lqUMpWkJjep80oD+7UnzZ1+Gq6SzLGUoTUtoVKcDupF0lpX8M1CcltCozicN6N+cfRmuks6ykI/C87SERnUOB84BZfF5oEAtoVGdw4FzQFH8TiSiltCozuHAOaAoDihRS2hU53DgHFAUB5SoJTSqczhwDiiKA0rUEhrVORw4BxTFASVqCY3qHA6cA8pStJ8lt+g/PaFRncOBc0BhelkLY2cAAA6QSURBVPaz5RbtCY3qHA6cA0pTs581t2hNaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgNH4vPE5LaFTncOAcUBhfjYmnJTSqczhwDiiLrwcK1BIa1TkcOAcUxVekJ2oJjeocDpwDiuKAErWERnUOB84BRXFAiVpCozqHA+eAojigRC2hUZ3DgXNAURxQopbQqM7hwDmgKA4oUUtoVOdw4BxQFAeUqCU0qnM4cA4oigNK1BIa1TkcOAeUpWg/S27Rf3pCozqHA+eAwvTsZ8st2hMa1TkcOAeUpmY/a27RmtCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB65mQH2hdhxDYaI6hwPXMqD+VUE8hsJEdQ4HrmRA/csqgQyFieocDlzHgPrXpRMZChPVORw4BxQn5aIvZyhMVOdw4BxQnJSLvpyhMFGdw4FzQHFSLvpyhsJEdQ4HzgHFSbnoyxkKE9U5HLiOAfVReCJDYaI6hwNXMqA+DxTIUJiozuHAtQyo34nEYyhMVOdw4GoGNOvWWcj/UuC0hEZ1DgfOAYXxzyp4WkKjOocD54Cy+GgZUEtoVOdw4BxQFJ+vRdQSGtU5HDgHFMUBJWoJjeocDpwDiuKAErWERnUOB84BRXFAiVpCozqHA+eAojigRC2hUZ3DgXNAWYr2s+QW/acnNKpzOHAOKEzPfrbcoj2hUZ3DgXNAaWr2s+YWrQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4FYP6H9iJJ1lKUNpWkKjOocD52egOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HLiaAb38cvYhniLooq9lKExU53DgWgb0cqlZ0JyLvpihMFGdw4ErGdDLpWdBYy76aobCRHUOB65jQC+XogVNuejLGQoT1TkcOAcUJ+WiL2coTFTncOAcUJyUi76coTBRncOBc0BxUi76cobCRHUOB84BxUm56MsZChPVORy4jgH1UXgiQ2GiOocDVzKgPg8UyFCYqM7hwDmgODkXfTFDYaI6hwNXMqB+CQ9kKExU53DgOgbUB5GIDIWJ6hwO3DED+vbmgMZIuejLGQoT1emA3nBAiQyFiep85oC+OaBBUi76cobCRHU+cUDfHNAkKRd9OUNhojqfNqBvb/kD6qPwRIbCRHU+c0Dj/wzUASUyFCaq83kD+u6DSFFSLvpyhsJEdT5tQN8fBvTtxiEf/sduBvTso0jicEAlaSefB4qTctGXMxQmqtMBveGAEhkKE9XpgN4q2s+su+FKhsJEdTqgd3r2M+tuuJKhMFGdDui9mv3MuhuuZChMVKcDupF0lqUMpWkJjep0QDeSzrKUoTQtoVGdDuhG0lmWMpSmJTSq0wHdSDrLUobStIRGdTqgG0lnWcpQmpbQqM6nDujnzr4MV0lnWcpQmpbQqM7hwDmgOIbStIRGdQ4HzgHFMZSmJTSqczhwDiiOoTQtoVGdw4FzQHEMpWkJjeocDpwDimMoTUtoVOdw4BxQHENpWkKjOocD54DiGErTEhrVORw4BxTHUJqW0KjO4cA5oDiG0rSERnUOB84BxTGUpiU0qnM4cA4ojqE0LaFRncOBc0BxDKVpCY3qHA6cA4pjKE1LaFTncOAcUBxDaVpCozqHA+eA4hhK0xIa1TkcOAcUx1CaltCozuHAOaA4htK0hEZ1DgfOAcUxlKYlNKpzOHAOKI6hNC2hUZ3DgXNAcQylaQmN6hwOnAOKYyhNS2hU53DgHFAcQ2laQqM6hwPngOIYStMSGtU5HDgHFMdQmpbQqM7hwDmgOIbStIRGdQ4HbvWA5nh7O/sET2IoTUvoK3Y6oDiG0rSEvmKnA4pjKE1L6Ct2OqA4htK0hL5ipwOKYyhNS+grdjqgOIbStIS+YqcDimMoTUvoK3Y6oDiG0rSEvmKnA4pjKE1L6Ct2OqA4htK0hL5ipwOKYyhNS+grdjqgOIbStIS+YmfPgErSwRxQSdrJAZWknRxQSdrJAZWknRxQSdrJAZWknRxQSdrJAZWknWoG9O0Vv83hm97+OPskT9AQ+tZyi77dOfs03+GAgrzqnXCHjtCXnZXvckDT/f+t8lo3zB7XQnrrn3/LXuxft2+6vUFLQl+NAwpyU8iOva0jl953loS+lpIBffvvgL7srTTUMqD3ceDUuzRw5wu31Qzo+yvfSkOlA3rWMdZzQOM5oCAlA0puu9f5qfZL6RjQ37fP695MMyUPIqHj7jig8RxQkBd9Jsh3setuFQ3oq953Kwb07c+AvtaN810vey/8HnTcHQc0XsmAbn/CdPe0wTMPsha57V7RgJ59gr1KBvQ1/+v2XXcPInFTwWkbDmi8hgF93a8Pvqnk+eWbNG6oA5qvY0A/+ilQyYCW7gq484XbHFCQ0gE96xjrOaDxCga05l7Y8megnf+lQN+ir9vmgIKUPAp/+9pE7FBfjSkef0C3Dzm87E31dy0Plr37eqAwvh5ors4BPfso6zV01tygDqgk1XFAJWknB1SSdnJAJWknB1SSdnJAJWknB1SSdnJAJWknB1SSdnJAJWknB1SZLt41lc97qU53+eWDN3165/ziH0nP5B1Rp3sYy8sfn77DM84l/Y13RJ1uO5WXy18W1AFVCO+IOtuvObydxP/t5v/+54AqmndEne2DAX3//SDSJ0vpgCqEd0SdzQHVy/KOqJNdtlN5M6D3v23zO/596/bL/69+/eFD/tJe3pV0stGA3j+m9O9PHh5s2j729PBY1F8e3pe+xzuSznUzhjdvurw/ftp4Hb7fPz48Wv+3Xz++QfoR70c61ycDejdx//7q5sebX/352d1wfvDrxzdIP+PdSOf6YEA/+kr87id/9vH+g2zf4eEDfPARpZ/wbqRTfbZptxP6xVJu3/zwB6cf/3+5oDqG9yKd6tNPCm8W9JO9vP+t13fZfogP380B1RG8F+lUtw8EbVbx9s8yH97p4d3vfrX9px/8fzmgOoD3Ip3p8027+aL80wF9eNftR/pkXx1QHcR7kc70lwF9/3JAr+918zu2H+rm146mjuY9SifabubNzP19QO+/Vt/884+++8gB1dG8R+lE3x7Q29/yyZvfP30/v27X0bxD6UQfDejtt3Juv/a+fDyg1zfffUr68Cnqw+RKP+O9SOfZrtjtDt4u4Ac/bt768XcaffTr+98o/Yh3I53n4wF9fHD9ffOGD37fh+/48IEeP7L0E96NdJ5PBvTh2UjbZ3Ru9/HTd3z4QO6nDuX9SKd5nLHt8t39k7sZ3Lz18S0fvd+Hb5D2856kTI6cXoD3UmVyQPUCvJcqkwOqF+C9VJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2ckAlaScHVJJ2+j9Mx/AQv5mU5gAAAABJRU5ErkJggg==" title alt width="672" /> Where A coded like 1, B - like 2, C - 3, D - 4, E - 5.</p>
+<p><img src="data:image/png;base64,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" title alt width="672" /> Where A coded like 1, B - like 2, C - 3, D - 4, E - 5.</p>
 </div>
 <div id="testing-the-model-on-the-testing-part-of-training-data-set" class="section level2">
 <h2>11 Testing the model on the testing part of training data set</h2>
@@ -772,15 +837,15 @@ qplot(x = A$classe, y = A$STEP.2, data= A) </code></pre>
 </tr>
 <tr class="even">
 <td align="center">B</td>
-<td align="center">98.42</td>
+<td align="center">99.21</td>
 </tr>
 <tr class="odd">
 <td align="center">C</td>
-<td align="center">98.54</td>
+<td align="center">98.83</td>
 </tr>
 <tr class="even">
 <td align="center">D</td>
-<td align="center">99.38</td>
+<td align="center">99.07</td>
 </tr>
 <tr class="odd">
 <td align="center">E</td>
@@ -788,7 +853,7 @@ qplot(x = A$classe, y = A$STEP.2, data= A) </code></pre>
 </tr>
 <tr class="even">
 <td align="center">Average</td>
-<td align="center">98.83</td>
+<td align="center">98.98</td>
 </tr>
 </tbody>
 </table>
@@ -797,12 +862,11 @@ qplot(x = A$classe, y = A$STEP.2, data= A) </code></pre>
 <div id="result" class="section level2">
 <h2>12 RESULT</h2>
 <pre class="r"><code>Class.As.Char &lt;- function(x) {
-  x$classe &lt;- 0
   x$classe[which(x$STEP.2&gt;=0 &amp; x$STEP.2&lt;1.5)] &lt;- &quot;A&quot;
-  x$classe[which(x$classe&gt;=1.5 &amp; x$STEP.2&lt;2.5)] &lt;- &quot;B&quot;
-  x$classe[which(x$classe&gt;=2.5 &amp; x$STEP.2&lt;3.5)] &lt;- &quot;C&quot;
-  x$classe[which(x$classe&gt;=3.5  &amp; x$STEP.2&lt;4.5)] &lt;- &quot;D&quot;
-  x$classe[which(x$classe&gt;=4.5)] &lt;- &quot;E&quot;
+  x$classe[which(x$STEP.2&gt;=1.5 &amp; x$STEP.2&lt;2.5)] &lt;- &quot;B&quot;
+  x$classe[which(x$STEP.2&gt;=2.5 &amp; x$STEP.2&lt;3.5)] &lt;- &quot;C&quot;
+  x$classe[which(x$STEP.2&gt;=3.5  &amp; x$STEP.2&lt;4.5)] &lt;- &quot;D&quot;
+  x$classe[which(x$STEP.2&gt;=4.5)] &lt;- &quot;E&quot;
   return(x)
 }
 A.test&lt;- Class.As.Char(A.test)</code></pre>
@@ -968,7 +1032,7 @@ pander(A.test.Result)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>As a result of applying re-training results improved significantly. I honestly didn’t expect that a training example can reach a very good result with a probability of 98%+. Thus it was possible to follow by the same path as the <a href="mailto:Groupware@LES">Groupware@LES</a> group, and get a decent result.</p>
+<p>As a result of applying re-training results improved significantly. I honestly didn’t expect that a training example can reach a very good result with a probability of 99%++. Thus it was possible to follow by the same path as the <a href="mailto:Groupware@LES">Groupware@LES</a> group, and get a decent result.</p>
 <p>Special note is the using of multi-threaded calculations. Without using this package, the result would have been much later.</p>
 <p>Thanks a lot for your time!</p>
 </div>
